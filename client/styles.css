@@ -6,27 +6,42 @@ Feel free to use it if you like. */
 
 body {
 	background-image: url(background.jpg);
-	margin-left: 10%;
-
+	margin-left: 25%;
 }
 
 div {
 	color: rgb(0,255,0);
 	font-family: Lucida Console, Monaco, monospace;
+	margin-left: 1em;
+}
+
+input {
+	background-color: rgb(0,255,0);
+	float: all;
+	font-family: Lucida Console, Monaco, monospace;
+	margin-left: 20em;
+}
+
+input:hover {
+	background-color: rgb(255, 0, 0);
+	color: white;
 }
 
 .title {
-	float: right;
-	margin-right: 50%;
 	font-size: 50px;
 	color: red;
 	font-family: Lucida Console, Monaco, monospace;
+	margin-left: 4em; 
 }
 
 .subtitle {
-	float: right;
 	color: red;
 	font-family: Lucida Console, Monaco, monospace;
+	margin-left: 9.3em;
 }
 
+.scoreboard {
+	position: absolute;
+	margin-top: 1em;
+}
 

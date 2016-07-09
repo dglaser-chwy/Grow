@@ -6,7 +6,7 @@ var audio = new Audio('hit.wav');
 
 
 //Builds the playing window
-var svg = d3.select("body")
+var svg = d3.select(".screen")
   .append("svg")
   .attr("width", 500)
   .attr("height", 500)
@@ -68,18 +68,18 @@ var player = d3.select('svg')
      "stroke-width" : "2",
    }).call(drag);
 
-// //Makes Power up
-// var powerUp = d3.select('svg')
-//   .append('svg:circle')
-//   .attr('class', 'player')
-//   .attr({
-//     'cx': 0,
-//     'cy': 250,
-//     'r': 10,
-//     "fill" : "black",
-//     "stroke" : "rgb(255,0,255)",
-//     "stroke-width" : "2",
-//   });
+//Makes Power up
+var powerUp = d3.select('svg')
+  .append('svg:circle')
+  .attr('class', 'player')
+  .attr({
+    'cx': -20,
+    'cy': 250,
+    'r': 10,
+    "fill" : "black",
+    "stroke" : "rgb(255,0,255)",
+    "stroke-width" : "2",
+  });
 
 //Makes timer for the current score
 var currentScore = function() {
