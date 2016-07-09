@@ -3,3 +3,30 @@
 /* Note: an asteroid image is included in this repo.
 Feel free to use it if you like. */
 
+
+body {
+	background-image: url(background.jpg);
+	margin-left: 10%;
+
+}
+
+div {
+	color: rgb(0,255,0);
+	font-family: Lucida Console, Monaco, monospace;
+}
+
+.title {
+	float: right;
+	margin-right: 50%;
+	font-size: 50px;
+	color: red;
+	font-family: Lucida Console, Monaco, monospace;
+}
+
+.subtitle {
+	float: right;
+	color: red;
+	font-family: Lucida Console, Monaco, monospace;
+}
+
+
