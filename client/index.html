@@ -4,28 +4,9 @@
  <link rel='stylesheet' type='text/css' href='styles.css'>
   </head>
   <body>
-    
-    <audio loop autoplay>
-     <source src="music.mp3" type="audio/mpeg">
-    </audio>
-    
-    <div class="container"> 
-      <div class="heading"> 
-        <div class="title">REKT</div>
-        <div class="subtitle">DRAG THE GREEN AND DODGE</div>
-      </div>
-       <div class="scoreboard">  
-        <div class="highscore">High score: <span>0</span></div>
-        <div class="current">Current score: <span>0</span></div>
-        <div class="collisions">Deaths: <span>0</span></div>
-       </div>
-       <div class="screen"></div>
-      <input type='button' value='Refresh Stats' onClick="window.location.reload()">
-    </div>
-    
-    
+    <div class="screen"></div>
+    <script src="lib/underscore-min.js"></script>
     <script src="lib/d3.js" charset="utf-8"></script>
-    <script src='watchout.js'></script>
-    
+    <script src='game.js'></script>
   </body>
 </html>
