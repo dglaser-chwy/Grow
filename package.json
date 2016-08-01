@@ -1,15 +1,18 @@
 {
-  "name": "watchout",
+  "name": "G-LAZER",
   "version": "1.0.1",
-  "description": "Asteroids-style game implemented using D3.js",
+  "description": "Retro videogame made using D3",
   "main": "client/index.html",
+  "engines": {
+    "node": "5.9.1"
+  },
   "scripts": {
     "test": "echo 'Error: no test specified'",
     "start": "open client/index.html"
   },
-  "license": "Copyright 2015, Hack Reactor Remote Beta. All rights reserved.",
+  "license": "By Daniel Glaser",
   "bugs": {
-    "url": "https://github.com/remotebeta-labs/sprint.watchout/issues"
+    "url": "https://g-lazer.herokuapp.com/"
   },
-  "homepage": "https://github.com/remotebeta-labs/sprint.watchout"
+  "homepage": "https://g-lazer.herokuapp.com/"
 }
