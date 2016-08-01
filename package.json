@@ -8,11 +8,14 @@
   },
   "scripts": {
     "test": "echo 'Error: no test specified'",
-    "start": "open client/index.html"
+    "start": "node server.js"
   },
   "license": "By Daniel Glaser",
   "bugs": {
     "url": "https://g-lazer.herokuapp.com/"
   },
-  "homepage": "https://g-lazer.herokuapp.com/"
+  "homepage": "https://g-lazer.herokuapp.com/",
+  "dependencies": {
+    "express": "^4.14.0"
+  }
 }
