@@ -12,7 +12,8 @@ var svg = d3.select('.screen')
 //////////////////////////////////////////////////
 //PLAYER
 
-var player = svg.append('polygon')  
+var player = svg.append('polygon')
+  .attr('class', 'player')  
   .attr('stroke', 'lightgreen')
   .attr('stroke-width', 2)
   .attr('points', "0, 30 0, 0 40, 15 ");
@@ -59,10 +60,14 @@ var moveTriangle = function() {
 
   //COMPLETE CONDITION
   if (player.x > 950) {
+    reset();
+  }
+};
+
+var reset = function() {
   player.x = 25;
   resetWalls();
   createWalls();
-  }
 };
 
 
@@ -93,22 +98,14 @@ d3.timer(moveTriangle);
 ///////////////////////////////////////////////
 //FINISH LINE
 
-var enemy = svg.append('polygon')  
-  .attr('stroke', 'red')
-  .attr('stroke-width', 2)
-  //0, 30 0, 0 40, 15
-  .attr('points', "0, 30 0, 0 -40, 15");
-
-_.extend(enemy, {  
-  x: 975,
-  y: 250,
-  angle: 0,
-  _speed: 4
-});
-
-enemy.attr('transform', function() {  
-  return 'translate(' + enemy.x + ',' + enemy.y + ')';
-});
+var finish = svg.append('svg:rect')  
+  .attr({
+    'fill': 'lightgreen',
+    'x' : 980,
+    'y' : 0,
+    'width' : 20,
+    'height' : 500
+  });
 
 ///////////////////////////////////////////////
 //WALLS
@@ -118,17 +115,16 @@ function getRandomArbitrary(min, max) {
 }
 
 var createWalls = function(){
-  var enemies = new Array(9);
+  var walls = new Array(15);
   d3.select("svg")
-    .selectAll("enemy")
-    .data(enemies)
+    .selectAll("wall")
+    .data(walls)
     .enter()
-    .append("svg:rect")
-    .attr("class", "enemy")
-    .attr("x", function() { return getRandomArbitrary(150, 800); })
-    .attr("y", function() { return getRandomArbitrary(-10, 300); })
-    .attr("width", function() { return getRandomArbitrary(30, 200); })
-    .attr("height", function() { return getRandomArbitrary(30, 200); })
+    .append("svg:circle")
+    .attr("class", "wall")
+    .attr("cx", function() { return getRandomArbitrary(150, 900); })
+    .attr("cy", function() { return getRandomArbitrary(-100, 600); })
+    .attr("r", function() { return getRandomArbitrary(30, 90); })
     .attr({
       "fill" : "white", 
       "stroke" : "white", 
@@ -137,9 +133,73 @@ var createWalls = function(){
 };
 
 var resetWalls = function() {
-  svg.selectAll("rect").remove();
+  svg.selectAll(".wall").remove();
 };
 
 createWalls();
+
+//////////////////////////////////////////////////
+//LAZER
+
+var createLazer = function() {
+  var lazer = svg.append('svg:rect')  
+    .attr("class", "lazer")
+    .attr({
+      'fill': 'red',
+      'x' : 0,
+      'y' : 0,
+      'width' : 1000,
+      'height' : 10
+    });
+};
+
+var resetLazer = function() {
+  svg.selectAll(".lazer").remove();
+};
+
+var moveLazer = function() {
+  d3.select('svg')
+    .selectAll('.lazer')
+    .transition()
+    .duration(3000)
+    .attr("y", 490)
+    .transition()
+    .duration(3000)
+    .attr("y", 0);
+};
+
+//if lazer rect is touching wall rect, set lazer width to as far as right edge of wall
+//else lazer width is 1000
+
+var wallCollision = false;
+
+createLazer();
+moveLazer();
+setInterval(moveLazer, 6000);
+
+///////////////////////////////////////////
+//WALL COLLISION
+
+var collison = function() {
+
+  //enemyCollision
+  var walls = d3.selectAll('.wall')[0];
+  for (var i = 0; i < walls.length; i++) {
+    var wall = walls[i];
+    console.log(wall);
+    var wallR = wall.r.baseVal.value;
+    var wallX = player.x - wall.cx.baseVal.value;
+    var wallY = player.y - wall.cy.baseVal.value;
+    var wallDistance = Math.sqrt(wallX*wallX + wallY*wallY);
+    if (wallDistance < wallR) {
+      console.log('COLLISON');
+      player.x = 25;
+    }
+  }
+};
+
+
+setInterval(collison, 200);
+
 
 
