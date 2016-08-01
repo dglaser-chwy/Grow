@@ -56,7 +56,15 @@ var moveTriangle = function() {
     player.y = isInBounds(y + player._speed, 'height');
   }
   player.move(x, y);
+
+  //COMPLETE CONDITION
+  if (player.x > 950) {
+  player.x = 25;
+  resetWalls();
+  createWalls();
+  }
 };
+
 
 var isInBounds = function(n, dimension) {  
   if (n < 0) {
@@ -83,7 +91,7 @@ player.move = function(x, y) {
 d3.timer(moveTriangle);
 
 ///////////////////////////////////////////////
-//ENEMY
+//FINISH LINE
 
 var enemy = svg.append('polygon')  
   .attr('stroke', 'red')
@@ -117,7 +125,7 @@ var createWalls = function(){
     .enter()
     .append("svg:rect")
     .attr("class", "enemy")
-    .attr("x", function() { return getRandomArbitrary(150, 750); })
+    .attr("x", function() { return getRandomArbitrary(150, 800); })
     .attr("y", function() { return getRandomArbitrary(-10, 300); })
     .attr("width", function() { return getRandomArbitrary(30, 200); })
     .attr("height", function() { return getRandomArbitrary(30, 200); })
@@ -126,6 +134,10 @@ var createWalls = function(){
       "stroke" : "white", 
       "stroke-width" : "5",
     });
+};
+
+var resetWalls = function() {
+  svg.selectAll("rect").remove();
 };
 
 createWalls();
