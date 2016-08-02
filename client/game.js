@@ -41,7 +41,7 @@ var player = svg.append('circle')
 _.extend(player, {  
   x: 250,
   y: 10,
-  _speed: 4
+  _speed: 3
 });
 
 player.attr('transform', function() {  
@@ -238,7 +238,7 @@ var collison = function() {
         .text("Retry")
         .attr("href", "https://jazzandrain.herokuapp.com")
         .style({
-          "color" : 'red',
+          "color" : 'lightblue',
           "float" : 'left',
           "margin-left": "46.5%",
           "font-size" : "30px"
