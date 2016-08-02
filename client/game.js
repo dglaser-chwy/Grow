@@ -12,16 +12,16 @@ var svg = d3.select('.screen')
 //////////////////////////////////////////////////
 //PLAYER
 
-var player = svg.append('polygon')
-  .attr('class', 'player')  
-  .attr('stroke', 'lightgreen')
+var player = svg.append('circle')  
+  .attr('stroke', 'lightblue')
   .attr('stroke-width', 2)
-  .attr('points', "0, 30 0, 0 40, 15 ");
+  .attr('r', 10)
+  .attr('x', 25)
+  .attr('y', 250);
 
 _.extend(player, {  
   x: 25,
   y: 250,
-  angle: 0,
   _speed: 4
 });
 
@@ -39,7 +39,7 @@ d3.select('body')
     keyPressed[d3.event.keyIdentifier] = false;
   });
 
-var moveTriangle = function() {
+var movePlayer = function() {
 
   var x = player.x;
   var y = player.y;
@@ -58,24 +58,18 @@ var moveTriangle = function() {
   }
   player.move(x, y);
 
-  //COMPLETE CONDITION
   if (player.x > 950) {
-    reset();
+    player.x = 25;
+    resetWalls();
+    createWalls();
   }
 };
-
-var reset = function() {
-  player.x = 25;
-  resetWalls();
-  createWalls();
-};
-
 
 var isInBounds = function(n, dimension) {  
   if (n < 0) {
     return 0;
-  } else if (n > svg.attr(dimension) - 40) {
-    return svg.attr(dimension) - 40;
+  } else if (n > svg.attr(dimension)) {
+    return svg.attr(dimension);
   } else {
     return n;
   }
@@ -88,12 +82,11 @@ player.move = function(x, y) {
     this.angle = 360 * (Math.atan2(dy, dx) / (Math.PI * 2));
   }
   player.attr('transform', function() {
-    return 'rotate(' + [this.angle, this.x + 20, this.y + 15].join() + ')' +
-      'translate(' + [this.x, this.y].join() + ')';
+    return 'translate(' + [this.x, this.y].join() + ')';
   }.bind(this));
 };
 
-d3.timer(moveTriangle);
+d3.timer(movePlayer);  
 
 ///////////////////////////////////////////////
 //FINISH LINE
@@ -191,7 +184,7 @@ var collison = function() {
     var wallX = player.x - wall.cx.baseVal.value;
     var wallY = player.y - wall.cy.baseVal.value;
     var wallDistance = Math.sqrt(wallX*wallX + wallY*wallY);
-    if (wallDistance < wallR) {
+    if (wallDistance - 16 < wallR) {
       console.log('COLLISON');
       player.x = 25;
     }
