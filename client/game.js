@@ -1,10 +1,15 @@
+window.onload = function() {
+    var backgroundAudio=document.getElementById("song");
+    backgroundAudio.volume=0.1;
+};
+
 //Builds the playing window
 var svg = d3.select('.screen')  
   .append('svg')
   .attr('height', 500)
-  .attr('width', 1000)
+  .attr('width', 500)
   .style({
-    "background-color" : "black", 
+    "background-color" : "midnightblue", 
     "border-color" : "rgb(255,255,255)",
     "border-style" : "solid",
     "border-width" : "5px",
@@ -14,14 +19,15 @@ var svg = d3.select('.screen')
 
 var player = svg.append('circle')  
   .attr('stroke', 'lightblue')
+  .attr('fill', 'lightblue')
   .attr('stroke-width', 2)
-  .attr('r', 10)
-  .attr('x', 25)
-  .attr('y', 250);
+  .attr('r', 5)
+  .attr('x', 250)
+  .attr('y', 10);
 
 _.extend(player, {  
-  x: 25,
-  y: 250,
+  x: 250,
+  y: 10,
   _speed: 4
 });
 
@@ -58,10 +64,13 @@ var movePlayer = function() {
   }
   player.move(x, y);
 
-  if (player.x > 950) {
-    player.x = 25;
-    resetWalls();
-    createWalls();
+  //Player reaches ground
+  if (player.y > 490) {
+    player.y = 10;
+    resetClouds();
+    createClouds();
+    createPlant(player.x);
+    plantHeight = plantHeight - 35;
   }
 };
 
@@ -94,30 +103,30 @@ d3.timer(movePlayer);
 var finish = svg.append('svg:rect')  
   .attr({
     'fill': 'lightgreen',
-    'x' : 980,
-    'y' : 0,
-    'width' : 20,
-    'height' : 500
+    'x' : 0,
+    'y' : 490,
+    'width' : 500,
+    'height' : 10
   });
 
 ///////////////////////////////////////////////
-//WALLS
+//clouds
 
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-var createWalls = function(){
-  var walls = new Array(15);
+var createClouds = function(){
+  var clouds = new Array(10);
   d3.select("svg")
-    .selectAll("wall")
-    .data(walls)
+    .selectAll("cloud")
+    .data(clouds)
     .enter()
     .append("svg:circle")
-    .attr("class", "wall")
-    .attr("cx", function() { return getRandomArbitrary(150, 900); })
-    .attr("cy", function() { return getRandomArbitrary(-100, 600); })
-    .attr("r", function() { return getRandomArbitrary(30, 90); })
+    .attr("class", "cloud")
+    .attr("cx", function() { return getRandomArbitrary(-10, 510); })
+    .attr("cy", function() { return getRandomArbitrary(100, 400); })
+    .attr("r", function() { return getRandomArbitrary(20, 70); })
     .attr({
       "fill" : "white", 
       "stroke" : "white", 
@@ -125,68 +134,52 @@ var createWalls = function(){
     });
 };
 
-var resetWalls = function() {
-  svg.selectAll(".wall").remove();
+var resetClouds = function() {
+  svg.selectAll(".cloud").remove();
 };
 
-createWalls();
+createClouds();
 
 //////////////////////////////////////////////////
-//LAZER
+//PLANT
 
-var createLazer = function() {
-  var lazer = svg.append('svg:rect')  
-    .attr("class", "lazer")
+var plantHeight = 450;
+
+var createPlant = function(x) {
+  var plant = svg.append('svg:rect')  
+    .attr("class", "plant")
     .attr({
-      'fill': 'red',
-      'x' : 0,
-      'y' : 0,
-      'width' : 1000,
-      'height' : 10
-    });
-};
-
-var resetLazer = function() {
-  svg.selectAll(".lazer").remove();
-};
-
-var moveLazer = function() {
-  d3.select('svg')
-    .selectAll('.lazer')
+      'fill': 'green',
+      'x' : x,
+      'y' : 500,
+      'width' : 10,
+      'height' : 500
+    })
     .transition()
     .duration(3000)
-    .attr("y", 490)
-    .transition()
-    .duration(3000)
-    .attr("y", 0);
+    .attr('y', plantHeight);
+    ground();
 };
-
-//if lazer rect is touching wall rect, set lazer width to as far as right edge of wall
-//else lazer width is 1000
-
-var wallCollision = false;
-
-createLazer();
-moveLazer();
-setInterval(moveLazer, 6000);
 
 ///////////////////////////////////////////
-//WALL COLLISION
+//cloud COLLISION
 
 var collison = function() {
 
   //enemyCollision
-  var walls = d3.selectAll('.wall')[0];
-  for (var i = 0; i < walls.length; i++) {
-    var wall = walls[i];
-    console.log(wall);
-    var wallR = wall.r.baseVal.value;
-    var wallX = player.x - wall.cx.baseVal.value;
-    var wallY = player.y - wall.cy.baseVal.value;
-    var wallDistance = Math.sqrt(wallX*wallX + wallY*wallY);
-    if (wallDistance - 16 < wallR) {
+  var clouds = d3.selectAll('.cloud')[0];
+  for (var i = 0; i < clouds.length; i++) {
+    var cloud = clouds[i];
+    console.log(cloud);
+    var cloudR = cloud.r.baseVal.value;
+    var cloudX = player.x - cloud.cx.baseVal.value;
+    var cloudY = player.y - cloud.cy.baseVal.value;
+    var wallDistance = Math.sqrt(cloudX*cloudX + cloudY*cloudY);
+    if (wallDistance - 5 < cloudR) {
       console.log('COLLISON');
-      player.x = 25;
+      player.y = 25;
+      resetClouds();
+      createClouds();
     }
   }
 };
@@ -194,5 +187,16 @@ var collison = function() {
 
 setInterval(collison, 200);
 
+//////////////////////////////////////////
+///
 
-
+var ground = function() {
+  svg.append('svg:rect')  
+  .attr({
+    'fill': 'lightgreen',
+    'x' : 0,
+    'y' : 490,
+    'width' : 500,
+    'height' : 10
+  });
+};
