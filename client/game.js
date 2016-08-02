@@ -1,17 +1,27 @@
 window.onload = function() {
     var backgroundAudio=document.getElementById("song");
-    backgroundAudio.volume=0.07;
+    backgroundAudio.volume=0.02;
+    var rainAudio=document.getElementById("rain");
+    rainAudio.volume=1.0;
 };
 
-console.log(d3.select('span').text());
-level = d3.select('span').text();
+var chime = new Audio('assets/chime.wav');
+
+var level = d3.select('.level').text();
+var drops = d3.select('.drops').text();
+
+var red = 0;
+var green = 0;
+var blue = 0;
 //Builds the playing window
 var svg = d3.select('.screen')  
   .append('svg')
   .attr('height', 500)
   .attr('width', 500)
   .style({
-    "background-color" : "midnightblue", 
+    "background-repeat" : "no-repeat",
+    "background-color" : "rgb(0, 0, 136)", 
+    "background-position" : "bottom",
     "border-color" : "rgb(255, 255, 255)",
     "border-style" : "solid",
     "border-width" : "5px",
@@ -73,6 +83,9 @@ var movePlayer = function() {
     createClouds(cloudNumber);
     createPlant(player.x);
     plantHeight = plantHeight - difficulty;
+    svg.style({
+      "background-image" : "none",
+    });
   }
 
   //LEVEL DONE
@@ -80,11 +93,17 @@ var movePlayer = function() {
     plantHeight = 480;
     difficulty = difficulty * 0.8;
     level++;
-    d3.select('span').text(level);
+    d3.select('.level').text(level);
+    drops++;
+    d3.select('.drops').text(drops);
     resetPlants();
     resetClouds();
     cloudNumber = cloudNumber + 1;
     createClouds(cloudNumber);
+    chime.play();
+    svg.style({
+        "background-image" : "url('assets/rainbow.gif')",
+      });
   }
 };
 
@@ -154,6 +173,7 @@ var resetClouds = function() {
 cloudNumber = 5;
 createClouds(cloudNumber);
 
+
 //////////////////////////////////////////////////
 //PLANT
 
@@ -201,7 +221,24 @@ var collison = function() {
     if (wallDistance - 5 < cloudR) {
       player.y = 25;
       resetClouds();
-      createClouds();
+      createClouds(cloudNumber);
+      drops--;
+      if (drops === 0) {
+        d3.select('body')  
+        .on('keydown', function() {
+          keyPressed[d3.event.keyIdentifier] = false;
+        })
+        .on('keyup', function() {
+          keyPressed[d3.event.keyIdentifier] = false;
+        });
+        d3.select('.screen')
+        .transition()
+        .duration(2500)
+        .style({
+          "opacity" : '0'
+        });
+      }
+      d3.select('.drops').text(drops);
     }
   }
 };

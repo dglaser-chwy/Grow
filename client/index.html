@@ -7,11 +7,14 @@
   <body>
     <h1>GROW</h1>
     <div class="screen"></div>
-    <h2>Level : <span class='level'>0</span></h2>
+    <div class="row">
+      <div id="level" class="col-sm-4"><h2>Level  <span class='level'>0</span></h2></div>
+      <div id="drops" class="col-sm-4"><h2>Drops  <span class='drops'>3</span></h2></div>
+    </div>
     <script src="lib/underscore-min.js"></script>
     <script src="lib/d3.js" charset="utf-8"></script>
     <script src='game.js'></script>
-    <audio autoplay loop>
+    <audio id="rain" autoplay loop>
       <source src="assets/rain.wav">
     </audio>
     <audio id="song" autoplay loop>

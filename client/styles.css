@@ -9,17 +9,23 @@ h2 {
 	margin-right: 40%;	
 }
 
-.drops {
-	margin-right: 10%;
-}
-
 .screen {
 	margin-top: 2%;
 }
 
-div {
-	color: rgb(0,255,0);
-	font-family: Lucida Console, Monaco, monospace;
+span {
+	color: white;
+}
+
+#level {
+	float : left;
+	margin-left: 45%;
+	padding-right: 0;
+}
+
+#drops {
+	float: left;
+	margin-right: 30%;
 }
 
 input {
