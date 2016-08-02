@@ -1,3 +1,5 @@
+////////////////////////////////////////////////////////
+//AUDIO
 window.onload = function() {
     var backgroundAudio=document.getElementById("song");
     backgroundAudio.volume=0.02;
@@ -7,13 +9,14 @@ window.onload = function() {
 
 var chime = new Audio('assets/chime.wav');
 
+//////////////////////////////////////////////////////
+///SCORE COUNTER START
+
 var level = d3.select('.level').text();
 var drops = d3.select('.drops').text();
 
-var red = 0;
-var green = 0;
-var blue = 0;
-//Builds the playing window
+//////////////////////////////////////////////////
+//GAME BOARD
 var svg = d3.select('.screen')  
   .append('svg')
   .attr('height', 500)
@@ -201,11 +204,6 @@ var resetPlants = function() {
   svg.selectAll(".plant").remove();
 };
 
-/////////////////////////////////////////////
-//LEVEL DONE
-
-
-
 ///////////////////////////////////////////
 //CLOUD COLLISION
 
@@ -268,7 +266,7 @@ var collison = function() {
 setInterval(collison, 200);
 
 //////////////////////////////////////////
-///
+///GROUND OVERLAY
 
 var ground = function() {
   svg.append('svg:rect')  
