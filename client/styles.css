@@ -34,12 +34,16 @@ span {
 
 #level {
 	float : left;
-	margin-left: 44.5%;
+	margin-left: 44.8%;
 	padding-right: 0;
 }
 
 #drops {
 	float: left;
+}
+
+.portfolio {
+	color: white;
 }
 
 input {

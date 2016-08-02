@@ -236,12 +236,26 @@ var collison = function() {
         d3.select('.retryDiv')  
         .append('a')
         .text("Retry")
+        .attr("class", "retry")
         .attr("href", "https://jazzandrain.herokuapp.com")
         .style({
           "color" : 'lightblue',
           "float" : 'left',
-          "margin-left": "46.5%",
+          "margin-left": "44.5%",
+          "margin-top" : "15px",
           "font-size" : "30px"
+        });
+
+        d3.select('.retry')  
+        .append('a')
+        .text("Portfolio")
+        .attr("href", "http://www.danielmglaser.com/")
+        .attr("class", "portfolio")
+        .style({
+          "float" : 'left',
+          "margin-left": "25.5%",
+          "font-size" : "18px",
+          "margin-top" : "30px",
         });
         
       }
