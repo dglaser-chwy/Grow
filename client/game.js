@@ -29,7 +29,8 @@ var svg = d3.select('.screen')
 //////////////////////////////////////////////////
 //PLAYER
 
-var player = svg.append('circle')  
+var player = svg.append('circle') 
+  .attr('class', 'player') 
   .attr('stroke', 'lightblue')
   .attr('fill', 'lightblue')
   .attr('stroke-width', 2)
@@ -65,9 +66,9 @@ var movePlayer = function() {
   if (keyPressed['Left']) {
     player.x = isInBounds(x - player._speed, 'width');
   }
-  if (keyPressed['Up']) {
-    player.y = isInBounds(y - player._speed, 'height');
-  }
+  // if (keyPressed['Up']) {
+  //   player.y = isInBounds(y - player._speed, 'height');
+  // }
   if (keyPressed['Right']) {
     player.x = isInBounds(x + player._speed, 'width');
   }
@@ -223,20 +224,26 @@ var collison = function() {
       resetClouds();
       createClouds(cloudNumber);
       drops--;
-      if (drops === 0) {
-        d3.select('body')  
-        .on('keydown', function() {
-          keyPressed[d3.event.keyIdentifier] = false;
-        })
-        .on('keyup', function() {
-          keyPressed[d3.event.keyIdentifier] = false;
-        });
-        d3.select('.screen')
-        .transition()
-        .duration(2500)
+      
+      //GAME OVER
+      if (drops <= 0) {
+        drops = 0;
+
+        svg.selectAll(".player").remove();
+
+        d3.select('.screen').remove();
+  
+        d3.select('.retryDiv')  
+        .append('a')
+        .text("Retry")
+        .attr("href", "https://jazzandrain.herokuapp.com")
         .style({
-          "opacity" : '0'
+          "color" : 'red',
+          "float" : 'left',
+          "margin-left": "46.5%",
+          "font-size" : "30px"
         });
+        
       }
       d3.select('.drops').text(drops);
     }

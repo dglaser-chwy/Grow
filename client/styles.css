@@ -19,13 +19,12 @@ span {
 
 #level {
 	float : left;
-	margin-left: 45%;
+	margin-left: 44%;
 	padding-right: 0;
 }
 
 #drops {
 	float: left;
-	margin-right: 30%;
 }
 
 input {
