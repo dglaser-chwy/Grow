@@ -1,8 +1,10 @@
 window.onload = function() {
     var backgroundAudio=document.getElementById("song");
-    backgroundAudio.volume=0.1;
+    backgroundAudio.volume=0.07;
 };
 
+console.log(d3.select('span').text());
+level = d3.select('span').text();
 //Builds the playing window
 var svg = d3.select('.screen')  
   .append('svg')
@@ -10,7 +12,7 @@ var svg = d3.select('.screen')
   .attr('width', 500)
   .style({
     "background-color" : "midnightblue", 
-    "border-color" : "rgb(255,255,255)",
+    "border-color" : "rgb(255, 255, 255)",
     "border-style" : "solid",
     "border-width" : "5px",
   });
@@ -64,13 +66,25 @@ var movePlayer = function() {
   }
   player.move(x, y);
 
-  //Player reaches ground
+  //PLAYER REACHES GROUND
   if (player.y > 490) {
     player.y = 10;
     resetClouds();
-    createClouds();
+    createClouds(cloudNumber);
     createPlant(player.x);
-    plantHeight = plantHeight - 35;
+    plantHeight = plantHeight - difficulty;
+  }
+
+  //LEVEL DONE
+  if (plantHeight < -difficulty) {
+    plantHeight = 480;
+    difficulty = difficulty * 0.8;
+    level++;
+    d3.select('span').text(level);
+    resetPlants();
+    resetClouds();
+    cloudNumber = cloudNumber + 1;
+    createClouds(cloudNumber);
   }
 };
 
@@ -110,14 +124,13 @@ var finish = svg.append('svg:rect')
   });
 
 ///////////////////////////////////////////////
-//clouds
-
+//CLOUDS
 function getRandomArbitrary(min, max) {
   return Math.random() * (max - min) + min;
 }
 
-var createClouds = function(){
-  var clouds = new Array(10);
+var createClouds = function(n){
+  var clouds = new Array(n);
   d3.select("svg")
     .selectAll("cloud")
     .data(clouds)
@@ -138,12 +151,14 @@ var resetClouds = function() {
   svg.selectAll(".cloud").remove();
 };
 
-createClouds();
+cloudNumber = 5;
+createClouds(cloudNumber);
 
 //////////////////////////////////////////////////
 //PLANT
 
-var plantHeight = 450;
+var plantHeight = 480;
+var difficulty = 80;
 
 var createPlant = function(x) {
   var plant = svg.append('svg:rect')  
@@ -161,8 +176,17 @@ var createPlant = function(x) {
     ground();
 };
 
+var resetPlants = function() {
+  svg.selectAll(".plant").remove();
+};
+
+/////////////////////////////////////////////
+//LEVEL DONE
+
+
+
 ///////////////////////////////////////////
-//cloud COLLISION
+//CLOUD COLLISION
 
 var collison = function() {
 
@@ -170,13 +194,11 @@ var collison = function() {
   var clouds = d3.selectAll('.cloud')[0];
   for (var i = 0; i < clouds.length; i++) {
     var cloud = clouds[i];
-    console.log(cloud);
     var cloudR = cloud.r.baseVal.value;
     var cloudX = player.x - cloud.cx.baseVal.value;
     var cloudY = player.y - cloud.cy.baseVal.value;
     var wallDistance = Math.sqrt(cloudX*cloudX + cloudY*cloudY);
     if (wallDistance - 5 < cloudR) {
-      console.log('COLLISON');
       player.y = 25;
       resetClouds();
       createClouds();
